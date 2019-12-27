@@ -85,9 +85,9 @@ class ReversedFunctionStaticNetwork(ExtendedTorchModule):
         self.nac_mul = nac_mul
         self.eps = eps
         if nac_mul == 'mnac':
-            unit_name_2 = unit_name[0:-3] + 'MNAC'
+            unit_name_1 = unit_name[0:-3] + 'MNAC'
         else:
-            unit_name_2 = unit_name
+            unit_name_1 = unit_name
             
         self.layer_1 = GeneralizedLayer(input_size, hidden_size,
                                         'linear' if unit_name_1 in BasicLayer.ACTIVATIONS else unit_name_1,
@@ -95,9 +95,9 @@ class ReversedFunctionStaticNetwork(ExtendedTorchModule):
                                         name='layer_1',
                                         eps=eps, **kwags)
         if first_layer is not None:
-            unit_name_1 = first_layer
+            unit_name_2 = first_layer
         else:
-            unit_name_1 = unit_name
+            unit_name_2 = unit_name
         
         self.layer_2 = GeneralizedLayer(hidden_size, 1,
                                         unit_name_2,
@@ -113,12 +113,7 @@ class ReversedFunctionStaticNetwork(ExtendedTorchModule):
         self.layer_2.reset_parameters()
 
     def regualizer(self):
-        if self.nac_mul == 'max-safe':
-            return super().regualizer({
-                'z': torch.mean(torch.relu(1 - self.z_1_stored))
-            })
-        else:
-            return super().regualizer()
+        return super().regualizer()
 
     def forward(self, input):
         self.writer.add_summary('x', input)
