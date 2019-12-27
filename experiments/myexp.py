@@ -352,7 +352,7 @@ dataset_test_interpolation_data = Dataset(2048)
 # Train model
 print('')
 for epoch_i, (x_train, t_train) in zip(range(args.max_iterations + 1), dataset_train):
-    x_train, t_train = Dataset(arg.batch-size)
+    x_train, t_train = Dataset(args.batch-size)
     summary_writer.set_iteration(epoch_i)
 
     # Prepear model
