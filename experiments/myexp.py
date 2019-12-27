@@ -198,7 +198,7 @@ parser.add_argument('--verbose',
 args = parser.parse_args()
 size = 2
 
-def dataset(num):
+def Dataset(num):
   x = 2 * np.random.rand(num, size, size) - 1
   t = np.linalg.det(a)
   return torch.Tensor(x).cuda(), torch.Tensor(t).cuda()
@@ -347,12 +347,12 @@ def test_model(data):
         x, t = data
         return criterion(model(x), t)
 
-dataset_valid_interpolation_data = dataset(2048)
-dataset_test_interpolation_data = dataset(2048)
+dataset_valid_interpolation_data = Dataset(2048)
+dataset_test_interpolation_data = Dataset(2048)
 # Train model
 print('')
 for epoch_i, (x_train, t_train) in zip(range(args.max_iterations + 1), dataset_train):
-    x_train, t_train = dataset(arg.batch-size)
+    x_train, t_train = Dataset(arg.batch-size)
     summary_writer.set_iteration(epoch_i)
 
     # Prepear model
