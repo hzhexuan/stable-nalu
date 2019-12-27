@@ -348,7 +348,7 @@ def test_model(data):
         return criterion(model(x), t)
 
 dataset_valid_interpolation_data = Dataset(2048)
-dataset_test_interpolation_data = Dataset(2048)
+dataset_test_extrapolation_data = Dataset(2048)
 # Train model
 print('')
 for epoch_i, (x_train, t_train) in zip(range(args.max_iterations + 1), dataset_train):
