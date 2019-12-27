@@ -200,7 +200,7 @@ size = 2
 
 def Dataset(num):
   x = 2 * np.random.rand(num, size, size) - 1
-  t = np.linalg.det(a)
+  t = np.linalg.det(x)
   return torch.Tensor(x).cuda(), torch.Tensor(t).cuda()
 
 setattr(args, 'cuda', torch.cuda.is_available() and not args.no_cuda)
