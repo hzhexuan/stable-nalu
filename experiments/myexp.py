@@ -201,7 +201,7 @@ parser.add_argument('--size',
 args = parser.parse_args()
 
 def Dataset(num):
-  x = 2 * np.random.rand(num, args.size, args.size) - 1
+  x = 4 * np.random.rand(num, args.size, args.size) - 2
   t = np.linalg.det(x).reshape([-1, 1])
   return torch.Tensor(x).cuda(), torch.Tensor(t).cuda()
 
