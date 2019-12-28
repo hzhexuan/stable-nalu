@@ -104,7 +104,7 @@ class ReversedFunctionStaticNetwork(ExtendedTorchModule):
                                         writer=self.writer,
                                         name='layer_2',
                                         eps=eps, **kwags)
-        
+        print(unit_name_1, unit_name_2)
         self.reset_parameters()
         self.z_1_stored = None
 
