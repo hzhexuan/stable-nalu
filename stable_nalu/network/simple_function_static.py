@@ -198,7 +198,6 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
 
     def forward(self, input):
         self.writer.add_summary('x', input)
-        print(list(input.size()))
         z_1 = self.layer_1(input)
         self.z_1_stored = z_1
         self.writer.add_summary('z_1', z_1)
