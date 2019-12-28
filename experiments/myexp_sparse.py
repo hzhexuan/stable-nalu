@@ -233,7 +233,6 @@ print(f'  - subset_ratio: {args.subset_ratio}')
 print(f'  - overlap_ratio: {args.overlap_ratio}')
 print(f'  - simple: {args.simple}')
 print(f'  -')
-print(f'  - hidden_size: {args.hidden_size}')
 print(f'  - nac_mul: {args.nac_mul}')
 print(f'  - oob_mode: {args.oob_mode}')
 print(f'  - regualizer_scaling: {args.regualizer_scaling}')
@@ -287,7 +286,6 @@ summary_writer = stable_nalu.writer.SummaryWriter(
     f'_z-{"simple" if args.simple else f"{args.input_size}-{args.subset_ratio}-{args.overlap_ratio}"}'
     f'_b{args.batch_size}'
     f'_s{args.seed}'
-    f'_h{args.hidden_size}'
     f'_z{args.num_subsets}'
     f'_lr-{args.optimizer}-{"%.5f" % args.learning_rate}-{args.momentum}',
     remove_existing_data=args.remove_existing_data
