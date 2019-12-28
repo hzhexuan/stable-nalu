@@ -197,10 +197,19 @@ parser.add_argument('--verbose',
 parser.add_argument('--size',
                     type=int,
                     default=2)
+parser.add_argument('--percent',
+                    type=float,
+                    default=1)
 args = parser.parse_args()
+
+if(percent == 1):
+  mask = np.ones((args.size, args.size))
+else:
+  mask = np.random.binomial(1, percent, (args.size, args.size))
 
 def Dataset(num):
   x = 4 * np.random.rand(num, args.size, args.size) - 2
+  x = x * mask
   t = np.linalg.det(x).reshape([-1, 1])
   return torch.Tensor(x.reshape([num, -1])).cuda(), torch.Tensor(t).cuda()
 
