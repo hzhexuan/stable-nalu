@@ -208,7 +208,7 @@ args = parser.parse_args()
 def Dataset(num):
   x = 4 * np.random.rand(num, args.size, args.size) - 2
   t = np.linalg.det(x).reshape([-1, 1])
-  return torch.Tensor(x).cuda(), torch.Tensor(t).cuda()
+  return torch.Tensor(x.reshape([-1, num * num])).cuda(), torch.Tensor(t).cuda()
 
 setattr(args, 'cuda', torch.cuda.is_available() and not args.no_cuda)
 
