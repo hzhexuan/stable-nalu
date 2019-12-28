@@ -179,6 +179,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
                                         name='layer_3',
                                         eps=eps, **kwags)
         print(unit_name_1, unit_name_2, unit_name_3)
+        print(input_size,hidden_size_add)
         self.reset_parameters()
         self.z_1_stored = None
 
@@ -197,7 +198,6 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
 
     def forward(self, input):
         self.writer.add_summary('x', input)
-        print(input_size,hidden_size_add)
         print(list(input.size()))
         z_1 = self.layer_1(input)
         self.z_1_stored = z_1
