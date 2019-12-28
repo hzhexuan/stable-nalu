@@ -159,13 +159,13 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
                                         unit_name,
                                         writer=self.writer,
                                         name='layer'+str(i+1),
-                                        eps=eps, **kwags))
+                                        eps=eps, **kwags)
             else:
                 locals()['self.layer'+str(i)] = GeneralizedLayer(hidden_size[i], hidden_size[i+1],
                                         unit_name[0:-3] + 'MNAC',
                                         writer=self.writer,
                                         name='layer'+str(i+1),
-                                        eps=eps, **kwags))
+                                        eps=eps, **kwags)
         
         self.reset_parameters()
 
