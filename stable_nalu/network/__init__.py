@@ -1,5 +1,5 @@
 
-from .simple_function_static import SimpleFunctionStaticNetwork, ReversedFunctionStaticNetwork
+from .simple_function_static import SimpleFunctionStaticNetwork, ReversedFunctionStaticNetwork, MultiFunctionStaticNetwork
 from .simple_function_recurrent import SimpleFunctionRecurrentNetwork
 from .sequential_svhn import SequentialSvhnNetwork
 from .sequential_mnist import SequentialMnistNetwork
