@@ -208,7 +208,7 @@ else:
   mask = np.random.binomial(1, args.percent, (args.size, args.size))
 
 def Dataset(num):
-  x = 4 * np.random.rand(num, args.size, args.size) - 2
+  x = 2 * np.random.rand(num, args.size, args.size) - 1
   x = x * mask
   t = np.linalg.det(x).reshape([-1, 1])
   return torch.Tensor(x.reshape([num, -1])).cuda(), torch.Tensor(t).cuda()
