@@ -156,23 +156,22 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
         
         for i in range(l):
             if(i % 2 == 0):
-                locals()['self.layer'+str(i+1)] = GeneralizedLayer(hidden_size[i], hidden_size[i+1],
+                setattr(self,'layer'+str(i+1), GeneralizedLayer(hidden_size[i], hidden_size[i+1],
                                         unit_name,
                                         writer=self.writer,
                                         name='layer'+str(i+1),
-                                        eps=eps, **kwags)
+                                        eps=eps, **kwags))
             else:
-                locals()['self.layer'+str(i+1)] = GeneralizedLayer(hidden_size[i], hidden_size[i+1],
+                setattr(self,'layer'+str(i+1), GeneralizedLayer(hidden_size[i], hidden_size[i+1],
                                         unit_name[0:-3] + 'MNAC',
                                         writer=self.writer,
                                         name='layer'+str(i+1),
-                                        eps=eps, **kwags)
-        print(self.layer1)
+                                        eps=eps, **kwags))
         self.reset_parameters()
 
     def reset_parameters(self):
         for i in range(self.l):
-            locals()['self.layer'+str(i+1)].reset_parameters()
+            getattr(self,'layer'+str(i+1)).reset_parameters()
 
     def regualizer(self):
         return super().regualizer()
@@ -180,7 +179,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
     def forward(self, input):
         self.writer.add_summary('x', input)
         for i in range(self.l):
-            input = locals()['self.layer'+str(i+1)](input)
+            input = getattr(self,'layer'+str(i+1))(input)
             self.writer.add_summary('z_' + str(i+1), input)
         return input
 
