@@ -202,10 +202,10 @@ parser.add_argument('--percent',
                     default=1)
 args = parser.parse_args()
 
-if(percent == 1):
+if(args.percent == 1):
   mask = np.ones((args.size, args.size))
 else:
-  mask = np.random.binomial(1, percent, (args.size, args.size))
+  mask = np.random.binomial(1, args.percent, (args.size, args.size))
 
 def Dataset(num):
   x = 4 * np.random.rand(num, args.size, args.size) - 2
