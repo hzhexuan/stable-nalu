@@ -94,8 +94,8 @@ parser.add_argument('--simple',
                     help='Use a very simple dataset with t = sum(v[0:2]) + sum(v[4:6])')
 
 parser.add_argument('--hidden-size',
-                    action='store',
-                    default=[8, 32],
+                    nargs='+', 
+                    type=int,
                     help='Specify the vector size of the hidden layer.')
 parser.add_argument('--nac-mul',
                     action='store',
