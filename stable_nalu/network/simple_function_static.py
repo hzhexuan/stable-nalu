@@ -167,7 +167,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
                                         writer=self.writer,
                                         name='layer'+str(i+1),
                                         eps=eps, **kwags)
-        
+        print(self.layer1)
         self.reset_parameters()
 
     def reset_parameters(self):
