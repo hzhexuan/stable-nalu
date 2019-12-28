@@ -153,16 +153,15 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
         l = len(hidden_size)
         hidden_size.append(1)
         
-        self.layers = []
         for i in range(l):
             if(i % 2 == 0):
-                self.layers.append(GeneralizedLayer(hidden_size[i], hidden_size[i+1],
+                locals()['self.layer'+str(i)] = GeneralizedLayer(hidden_size[i], hidden_size[i+1],
                                         unit_name,
                                         writer=self.writer,
                                         name='layer'+str(i+1),
                                         eps=eps, **kwags))
             else:
-                self.layers.append(GeneralizedLayer(hidden_size[i], hidden_size[i+1],
+                locals()['self.layer'+str(i)] = GeneralizedLayer(hidden_size[i], hidden_size[i+1],
                                         unit_name[0:-3] + 'MNAC',
                                         writer=self.writer,
                                         name='layer'+str(i+1),
@@ -180,7 +179,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
     def forward(self, input):
         self.writer.add_summary('x', input)
         for i in range(l):
-            input = self.layers[i](input)
+            input = locals()['self.layer'+str(i)](input)
             self.writer.add_summary('z_' + str(i+1), input)
         return input
 
