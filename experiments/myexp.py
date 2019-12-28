@@ -196,7 +196,7 @@ parser.add_argument('--verbose',
                     default=False,
                     help='Should network measures (e.g. gates) and gradients be shown')
 parser.add_argument('--size',
-                    type=float,
+                    type=int,
                     default=2)
 args = parser.parse_args()
 
