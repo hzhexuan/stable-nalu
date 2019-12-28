@@ -151,6 +151,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
         self.eps = eps
         hidden_size.insert(0, input_size)
         l = len(hidden_size)
+        self.l = l
         hidden_size.append(1)
         
         for i in range(l):
@@ -170,7 +171,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
         self.reset_parameters()
 
     def reset_parameters(self):
-        for i in range(l):
+        for i in range(self.l):
             locals()['self.layer'+str(i+1)].reset_parameters()
 
     def regualizer(self):
@@ -178,7 +179,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
 
     def forward(self, input):
         self.writer.add_summary('x', input)
-        for i in range(l):
+        for i in range(self.l):
             input = locals()['self.layer'+str(i+1)](input)
             self.writer.add_summary('z_' + str(i+1), input)
         return input
