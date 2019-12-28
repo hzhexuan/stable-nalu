@@ -317,7 +317,7 @@ dataset_test_extrapolation_data = next(iter(dataset.fork(sample_range=args.extra
 # setup model
 model = stable_nalu.network.ReversedFunctionStaticNetwork(
     args.layer_type,
-    input_size=dataset.get_input_size(),
+    input_size=args.size ** 2,
     writer=summary_writer.every(1000).verbose(args.verbose),
     first_layer=args.first_layer,
     hidden_size=args.hidden_size,
