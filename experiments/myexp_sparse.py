@@ -93,15 +93,9 @@ parser.add_argument('--simple',
                     default=False,
                     help='Use a very simple dataset with t = sum(v[0:2]) + sum(v[4:6])')
 
-parser.add_argument('--hidden-size-add',
+parser.add_argument('--hidden-size',
                     action='store',
-                    default=8,
-                    type=int,
-                    help='Specify the vector size of the hidden layer.')
-parser.add_argument('--hidden-size-mul',
-                    action='store',
-                    default=32,
-                    type=int,
+                    default=[8, 32],
                     help='Specify the vector size of the hidden layer.')
 parser.add_argument('--nac-mul',
                     action='store',
@@ -323,8 +317,7 @@ model = stable_nalu.network.MultiFunctionStaticNetwork(
     input_size=args.size ** 2,
     writer=summary_writer.every(1000).verbose(args.verbose),
     first_layer=args.first_layer,
-    hidden_size_add=args.hidden_size_add,
-    hidden_size_mul=args.hidden_size_mul,
+    hidden_size=[int(i) for i in args.hidden_size],
     nac_oob=args.oob_mode,
     regualizer_shape=args.regualizer_shape,
     regualizer_z=args.regualizer_z,
