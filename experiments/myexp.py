@@ -195,11 +195,13 @@ parser.add_argument('--verbose',
                     action='store_true',
                     default=False,
                     help='Should network measures (e.g. gates) and gradients be shown')
+parser.add_argument('--size',
+                    type=float,
+                    default=2)
 args = parser.parse_args()
-size = 2
 
 def Dataset(num):
-  x = 2 * np.random.rand(num, size, size) - 1
+  x = 2 * np.random.rand(num, args.size, args.size) - 1
   t = np.linalg.det(x).reshape([-1, 1])
   return torch.Tensor(x).cuda(), torch.Tensor(t).cuda()
 
