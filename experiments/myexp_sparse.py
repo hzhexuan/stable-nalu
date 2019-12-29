@@ -302,18 +302,6 @@ if 'LSB_DJOB_NUMPROC' in os.environ:
 torch.manual_seed(args.seed)
 torch.backends.cudnn.deterministic = True
 
-# Setup datasets
-dataset = stable_nalu.dataset.SimpleFunctionStaticDataset(
-    operation=args.operation,
-    input_size=args.input_size,
-    subset_ratio=args.subset_ratio,
-    overlap_ratio=args.overlap_ratio,
-    num_subsets=args.num_subsets,
-    simple=args.simple,
-    use_cuda=args.cuda,
-    seed=args.seed,
-)
-
 # setup model
 model = stable_nalu.network.MultiFunctionStaticNetwork(
     args.layer_type,
