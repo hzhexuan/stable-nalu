@@ -313,12 +313,6 @@ dataset = stable_nalu.dataset.SimpleFunctionStaticDataset(
     use_cuda=args.cuda,
     seed=args.seed,
 )
-print(f'  -')
-print(f'  - dataset: {dataset.print_operation()}')
-# Interpolation and extrapolation seeds are from random.org
-dataset_train = iter(dataset.fork(sample_range=args.interpolation_range).dataloader(batch_size=args.batch_size))
-dataset_valid_interpolation_data = next(iter(dataset.fork(sample_range=args.interpolation_range, seed=43953907).dataloader(batch_size=10000)))
-dataset_test_extrapolation_data = next(iter(dataset.fork(sample_range=args.extrapolation_range, seed=8689336).dataloader(batch_size=10000)))
 
 # setup model
 model = stable_nalu.network.MultiFunctionStaticNetwork(
@@ -359,7 +353,7 @@ dataset_valid_interpolation_data = Dataset(2048)
 dataset_test_extrapolation_data = Dataset(2048)
 # Train model
 print('')
-for epoch_i, (x_train, t_train) in zip(range(args.max_iterations + 1), dataset_train):
+for epoch_i in range(args.max_iterations + 1):
     x_train, t_train = Dataset(args.batch_size)
     summary_writer.set_iteration(epoch_i)
 
