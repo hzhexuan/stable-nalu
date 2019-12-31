@@ -201,23 +201,18 @@ args = parser.parse_args()
 hidden_size = ""
 for e in args.hidden_size:
     hidden_size += " "+str(e)
-out = os.popen("python experiments/myexp_sparse.py \
-    --batch-size "+str(args.batch_size)+" --learning-rate "+str(args.learning_rate)+" --regualizer "+str(args.regualizer)+" \
-    --regualizer-scaling-start "+str(args.regualizer_scaling_start)+" --regualizer-scaling-end "+str(args.regualizer_scaling_end)+" \
-    --input-size 4 --interpolation-range [-1,1] --extrapolation-range [-1,1] \
-    --size "+str(args.size)+" --hidden-size" + hidden_size + " --momentum "+str(args.momentum)+" --percent "+str(args.percent)+" \
-    --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
-    --seed 1 --max-iterations "+str(args.max_iterations)+" --verbose \
-    --name-prefix test --remove-existing-data")
-print("finish1")
-out2 = os.popen("python experiments/myexp_sparse.py \
-    --batch-size "+str(args.batch_size)+" --learning-rate "+str(args.learning_rate)+" --regualizer "+str(args.regualizer)+" \
-    --regualizer-scaling-start "+str(args.regualizer_scaling_start)+" --regualizer-scaling-end "+str(args.regualizer_scaling_end)+" \
-    --input-size 4 --interpolation-range [-1,1] --extrapolation-range [-1,1] \
-    --size "+str(args.size)+" --hidden-size" + hidden_size + " --momentum "+str(args.momentum)+" --percent "+str(args.percent)+" \
-    --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
-    --seed 1 --max-iterations "+str(args.max_iterations)+" --verbose \
-    --name-prefix test --remove-existing-data")
-print("finish2")
-print(out.read())
-print(out2.read())
+
+for i in range(100):
+  locals()[out+str(i)] = os.popen("python experiments/myexp_sparse.py \
+      --batch-size "+str(args.batch_size)+" --learning-rate "+str(args.learning_rate)+" --regualizer "+str(args.regualizer)+" \
+      --regualizer-scaling-start "+str(args.regualizer_scaling_start)+" --regualizer-scaling-end "+str(args.regualizer_scaling_end)+" \
+      --input-size 4 --interpolation-range [-1,1] --extrapolation-range [-1,1] \
+      --size "+str(args.size)+" --hidden-size" + hidden_size + " --momentum "+str(args.momentum)+" --percent "+str(args.percent)+" \
+      --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
+      --seed 1 --max-iterations "+str(args.max_iterations)+" --verbose \
+      --name-prefix test --remove-existing-data")
+
+for i in range(100):
+  print(locals()[out+str(i)])
+
+os._exit(0)
