@@ -209,6 +209,7 @@ out = os.popen("python experiments/myexp_sparse.py \
     --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
     --seed 1 --max-iterations "+str(args.max_iterations)+" --verbose \
     --name-prefix test --remove-existing-data")
+print("finish1")
 out2 = os.popen("python experiments/myexp_sparse.py \
     --batch-size "+str(args.batch_size)+" --learning-rate "+str(args.learning_rate)+" --regualizer "+str(args.regualizer)+" \
     --regualizer-scaling-start "+str(args.regualizer_scaling_start)+" --regualizer-scaling-end "+str(args.regualizer_scaling_end)+" \
@@ -217,4 +218,5 @@ out2 = os.popen("python experiments/myexp_sparse.py \
     --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
     --seed 1 --max-iterations "+str(args.max_iterations)+" --verbose \
     --name-prefix test --remove-existing-data")
+print("finish2")
 print(out.read())
