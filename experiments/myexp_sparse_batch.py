@@ -5,6 +5,7 @@ import ast
 import math
 import torch
 parser = argparse.ArgumentParser(description='Runs the simple function static task')
+parser.add_argument('--num_test, type=int)
 parser.add_argument('--layer-type',
                     action='store',
                     default='NALU',
@@ -202,7 +203,7 @@ hidden_size = ""
 for e in args.hidden_size:
     hidden_size += " "+str(e)
 
-for i in range(20):
+for i in range(args.num_test):
   locals()['out'+str(i)] = os.popen("python experiments/myexp_sparse.py \
       --batch-size "+str(args.batch_size)+" --learning-rate "+str(args.learning_rate)+" --regualizer "+str(args.regualizer)+" \
       --regualizer-scaling-start "+str(args.regualizer_scaling_start)+" --regualizer-scaling-end "+str(args.regualizer_scaling_end)+" \
@@ -212,7 +213,7 @@ for i in range(20):
       --seed 1 --max-iterations "+str(args.max_iterations)+" --verbose \
       --name-prefix test --remove-existing-data")
 
-for i in range(20):
+for i in range(args.num_test):
   print(locals()['out'+str(i)].read())
 
 os._exit(0)
