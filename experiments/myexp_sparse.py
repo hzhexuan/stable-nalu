@@ -207,8 +207,10 @@ if(args.percent == 1):
 else:
   mask = np.random.binomial(1, args.percent, (args.size, args.size))
 
-def Dataset(num):
+def Dataset(num, extra=False):
   x = 2 * np.random.rand(num, args.size, args.size) - 1
+  if(extra==True):
+    x = x + np.sign(x)
   x = x * mask
   t = np.linalg.det(x).reshape([-1, 1])
   return torch.Tensor(x.reshape([num, -1])).cuda(), torch.Tensor(t).cuda()
@@ -320,6 +322,7 @@ model = stable_nalu.network.MultiFunctionStaticNetwork(
     nalu_mul=args.nalu_mul,
     nalu_gate=args.nalu_gate,
 )
+
 model.reset_parameters()
 if args.cuda:
     model.cuda()
@@ -338,7 +341,7 @@ def test_model(data):
         return criterion(model(x), t)
 
 dataset_valid_interpolation_data = Dataset(2048)
-dataset_test_extrapolation_data = Dataset(2048)
+dataset_test_extrapolation_data = Dataset(2048, extra=True)
 # Train model
 print('')
 for epoch_i in range(args.max_iterations + 1):
@@ -402,4 +405,4 @@ print(f'  - loss_valid_inter: {loss_valid_inter}')
 print(f'  - loss_valid_extra: {loss_valid_extra}')
 
 # Use saved weights to visualize the intermediate values.
-stable_nalu.writer.save_model(summary_writer.name, model)
+#stable_nalu.writer.save_model(summary_writer.name, model)
