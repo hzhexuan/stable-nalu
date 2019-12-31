@@ -217,7 +217,6 @@ def Dataset(num, extra=False):
   return torch.Tensor(x.reshape([num, -1])), torch.Tensor(t)
 
 setattr(args, 'cuda', torch.cuda.is_available() and not args.no_cuda)
-print(f'{"m" if args.nac_mul == "mnac" else ""}')
 # Prepear logging
 summary_writer = stable_nalu.writer.SummaryWriter(
     f'{args.name_prefix}/{args.layer_type.lower()}'
