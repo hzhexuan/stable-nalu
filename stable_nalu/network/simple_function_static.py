@@ -161,12 +161,14 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
                                         writer=self.writer,
                                         name='layer'+str(i+1),
                                         eps=eps, **kwags))
+                print(unit_name, hidden_size[i], hidden_size[i+1])
             else:
                 setattr(self,'layer'+str(i+1), GeneralizedLayer(hidden_size[i], hidden_size[i+1],
                                         unit_name[0:-3] + 'MNAC',
                                         writer=self.writer,
                                         name='layer'+str(i+1),
                                         eps=eps, **kwags))
+                print(unit_name[0:-3] + 'MNAC', hidden_size[i], hidden_size[i+1])
         self.reset_parameters()
 
     def reset_parameters(self):
