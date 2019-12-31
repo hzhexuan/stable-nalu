@@ -349,8 +349,8 @@ for epoch_i in range(args.max_iterations + 1):
         summary_writer.add_scalar('loss/train/critation', loss_train_criterion)
         summary_writer.add_scalar('loss/train/regualizer', loss_train_regualizer)
         summary_writer.add_scalar('loss/train/total', loss_train)
-    if epoch_i % 1000 == 0:
-        print('train %d: %.5f, inter: %.5f, extra: %.5f' % (epoch_i, loss_train_criterion, interpolation_error, extrapolation_error))
+    #if epoch_i % 1000 == 0:
+    #    print('train %d: %.5f, inter: %.5f, extra: %.5f' % (epoch_i, loss_train_criterion, interpolation_error, extrapolation_error))
 
     # Optimize model
     if loss_train.requires_grad:
