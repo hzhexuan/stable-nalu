@@ -207,7 +207,7 @@ out = os.popen("python experiments/myexp_sparse.py \
     --input-size 4 --interpolation-range [-1,1] --extrapolation-range [-1,1] \
     --size "+str(args.size)+" --hidden-size" + hidden_size + " --momentum "+str(args.momentum --percent)+" "+str(args.percent)+" \
     --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
-    --seed 1 --max-iterations 2000 --verbose \
+    --seed 1 --max-iterations "+str(args.max_iterations)+" --verbose \
     --name-prefix test --remove-existing-data")
 
 print(out.read())
