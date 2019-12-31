@@ -220,3 +220,4 @@ out2 = os.popen("python experiments/myexp_sparse.py \
     --name-prefix test --remove-existing-data")
 print("finish2")
 print(out.read())
+print(out2.read())
