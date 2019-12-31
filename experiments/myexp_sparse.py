@@ -212,7 +212,9 @@ def Dataset(num, extra=False):
     x = x + np.sign(x)
   x = x * mask
   t = np.linalg.det(x).reshape([-1, 1])
-  return torch.Tensor(x.reshape([num, -1])).cuda(), torch.Tensor(t).cuda()
+  if(torch.cuda.is_available()):
+    return torch.Tensor(x.reshape([num, -1])).cuda(), torch.Tensor(t).cuda()
+  return torch.Tensor(x.reshape([num, -1])), torch.Tensor(t)
 
 setattr(args, 'cuda', torch.cuda.is_available() and not args.no_cuda)
 
