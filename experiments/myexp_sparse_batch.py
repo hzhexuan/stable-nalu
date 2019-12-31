@@ -2,6 +2,8 @@ import os
 import argparse
 import stable_nalu
 import ast
+import math
+import torch
 parser = argparse.ArgumentParser(description='Runs the simple function static task')
 parser.add_argument('--layer-type',
                     action='store',
