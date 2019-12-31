@@ -5,7 +5,10 @@ import ast
 import math
 import torch
 parser = argparse.ArgumentParser(description='Runs the simple function static task')
-parser.add_argument('--num_test, type=int)
+parser.add_argument('--num_test, 
+                    action='store',
+                    default=5,
+                    type=int)
 parser.add_argument('--layer-type',
                     action='store',
                     default='NALU',
