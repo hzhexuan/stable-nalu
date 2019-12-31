@@ -1,4 +1,5 @@
 import os
+import argparse
 parser = argparse.ArgumentParser(description='Runs the simple function static task')
 parser.add_argument('--layer-type',
                     action='store',
