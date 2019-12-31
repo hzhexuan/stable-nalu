@@ -348,8 +348,8 @@ L_in = []
 L_ex = []
 for i in range(1000):
   model.reset_parameters()
-  L_in.append(test_model(dataset_valid_interpolation_data))
-  L_ex.append(test_model(dataset_test_extrapolation_data))
+  L_in.append(test_model(dataset_valid_interpolation_data).cpu().numpy())
+  L_ex.append(test_model(dataset_test_extrapolation_data).cpu().numpy())
 print("in, ex", sum(L_in)/len(L_in), sum(L_ex)/len(L_ex))
   
 # Train model
