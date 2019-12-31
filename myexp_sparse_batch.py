@@ -408,5 +408,5 @@ def experiment(seed):
   
 import multiprocessing
 pool = multiprocessing.Pool()
-print(pool.map(experiment, range(10)))
+print(pool.map(experiment, range(1)))
 os._exit(0)
