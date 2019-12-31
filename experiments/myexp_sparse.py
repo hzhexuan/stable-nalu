@@ -418,3 +418,4 @@ print(f'  - loss_valid_extra: {loss_valid_extra}')
 #stable_nalu.writer.save_model(summary_writer.name, model)
 import sys
 sys.exit(loss_valid_extra)
+os._exit(0)
