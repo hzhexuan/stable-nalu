@@ -301,8 +301,8 @@ if 'LSB_DJOB_NUMPROC' in os.environ:
     torch.set_num_threads(int(os.environ['LSB_DJOB_NUMPROC']))
 
 # Set seed
-torch.manual_seed(args.seed)
-torch.backends.cudnn.deterministic = True
+#torch.manual_seed(args.seed)
+#torch.backends.cudnn.deterministic = True
 
 # setup model
 model = stable_nalu.network.MultiFunctionStaticNetwork(
@@ -342,6 +342,16 @@ def test_model(data):
 
 dataset_valid_interpolation_data = Dataset(2048)
 dataset_test_extrapolation_data = Dataset(2048, extra=True)
+
+# Test with different initialization
+L_in = []
+L_ex = []
+for i in range(1000):
+  model.reset_parameters()
+  L_in.append(test_model(dataset_valid_interpolation_data))
+  L_ex.append(test_model(dataset_test_extrapolation_data))
+print("in, ex", sum(L_in)/len(L_in), sum(L_ex)/len(L_ex))
+  
 # Train model
 print('')
 for epoch_i in range(args.max_iterations + 1):
