@@ -303,7 +303,7 @@ dataset_test_extrapolation_data = Dataset(256, extra=True)
 # Test with different initialization
 L_in = []
 L_ex = []
-for i in range(1000):
+for i in range(100):
   model.reset_parameters()
   L_in.append(test_model(dataset_valid_interpolation_data).cpu().numpy())
   L_ex.append(test_model(dataset_test_extrapolation_data).cpu().numpy())
@@ -371,7 +371,7 @@ loss_valid_extra = test_model(dataset_test_extrapolation_data)
 #print(f'  - loss_valid_inter: {loss_valid_inter}')
 #print(f'  - loss_valid_extra: {loss_valid_extra}')
 
-print("inter_begin, extra_begin, inter_end, extra_end", sum(L_in)/len(L_in), sum(L_ex)/len(L_ex), loss_valid_inter.cpu().numpy(), loss_valid_extra.cpu().numpy())
+print(sum(L_in)/len(L_in), sum(L_ex)/len(L_ex), loss_valid_inter.cpu().numpy(), loss_valid_extra.cpu().numpy())
 # Use saved weights to visualize the intermediate values.
 #stable_nalu.writer.save_model(summary_writer.name, model)
 import sys
