@@ -1,6 +1,7 @@
 import os
 import argparse
 import stable_nalu
+import ast
 parser = argparse.ArgumentParser(description='Runs the simple function static task')
 parser.add_argument('--layer-type',
                     action='store',
