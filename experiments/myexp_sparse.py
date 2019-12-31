@@ -179,7 +179,7 @@ parser.add_argument('--momentum',
 parser.add_argument('--no-cuda',
                     action='store_true',
                     default=False,
-                    help=f'Force no CUDA (cuda usage is detected automatically as {torch.cuda.is_available()})')
+                    help='Force no CUDA (cuda usage is detected automatically as {torch.cuda.is_available()})')
 parser.add_argument('--name-prefix',
                     action='store',
                     default='simple_function_static',
