@@ -6,7 +6,7 @@ for i in $(seq 1 1 $1);do
         --size $2 --hidden-size 16 128  --momentum 0.0 --percent $3\
         --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
         --seed $i --max-iterations 2000 \
-        --name-prefix test --remove-existing-data 2>&1 | >> result_{$2}.txt
+        --name-prefix test --remove-existing-data
         }&
 done
 wait
