@@ -7,3 +7,4 @@ python experiments/myexp_sparse.py --batch-size 64 --learning-rate 0.01 --regual
     --seed $i --max-iterations 20000 \
     --name-prefix test --remove-existing-data &
 done
+echo $1
