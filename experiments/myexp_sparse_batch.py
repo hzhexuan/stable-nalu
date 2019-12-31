@@ -202,7 +202,7 @@ hidden_size = ""
 for e in args.hidden_size:
     hidden_size += " "+str(e)
 
-for i in range(2):
+for i in range(20):
   locals()['out'+str(i)] = os.popen("python experiments/myexp_sparse.py \
       --batch-size "+str(args.batch_size)+" --learning-rate "+str(args.learning_rate)+" --regualizer "+str(args.regualizer)+" \
       --regualizer-scaling-start "+str(args.regualizer_scaling_start)+" --regualizer-scaling-end "+str(args.regualizer_scaling_end)+" \
@@ -212,7 +212,7 @@ for i in range(2):
       --seed 1 --max-iterations "+str(args.max_iterations)+" --verbose \
       --name-prefix test --remove-existing-data")
 
-for i in range(2):
+for i in range(20):
   print(locals()['out'+str(i)].read())
 
 os._exit(0)
