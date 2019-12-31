@@ -416,4 +416,5 @@ print(f'  - loss_valid_extra: {loss_valid_extra}')
 
 # Use saved weights to visualize the intermediate values.
 #stable_nalu.writer.save_model(summary_writer.name, model)
-os._exit(0)
+import sys
+sys.exit(loss_valid_extra)
