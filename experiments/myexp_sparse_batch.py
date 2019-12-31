@@ -203,7 +203,7 @@ for e in args.hidden_size:
     hidden_size += " "+str(e)
 out = os.popen("python experiments/myexp_sparse.py \
     --batch-size "+str(args.batch_size)+" --learning-rate "+str(args.learning_rate)+" --regualizer "+str(args.regualizer)+" \
-    --regualizer-scaling-start "+str(args.regulizer_scaling_start)+" --regualizer-scaling-end "+str(args.regulizer_scaling_end)+" \
+    --regualizer-scaling-start "+str(args.regualizer_scaling_start)+" --regualizer-scaling-end "+str(args.regualizer_scaling_end)+" \
     --input-size 4 --interpolation-range [-1,1] --extrapolation-range [-1,1] \
     --size "+str(args.size)+" --hidden-size" + hidden_size + " --momentum "+str(args.momentum --percent)+" "+str(args.percent)+" \
     --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
