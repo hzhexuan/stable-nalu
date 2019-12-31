@@ -370,8 +370,16 @@ loss_valid_extra = test_model(dataset_test_extrapolation_data)
 #print(f'  - loss_train: {loss_train}')
 #print(f'  - loss_valid_inter: {loss_valid_inter}')
 #print(f'  - loss_valid_extra: {loss_valid_extra}')
-
+def listToString(s):  
+    
+    # initialize an empty string 
+    str1 = " " 
+    
+    # return string   
+    return (str1.join(s))
 print(sum(L_in)/len(L_in), sum(L_ex)/len(L_ex), loss_valid_inter.cpu().numpy(), loss_valid_extra.cpu().numpy())
+with open("result"+str(args.size)+".txt", "w+") as f:
+  f.write(listToString([sum(L_in)/len(L_in), sum(L_ex)/len(L_ex), loss_valid_inter.cpu().numpy(), loss_valid_extra.cpu().numpy()]) + '\n')
 # Use saved weights to visualize the intermediate values.
 #stable_nalu.writer.save_model(summary_writer.name, model)
 import sys
