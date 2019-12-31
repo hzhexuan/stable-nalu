@@ -297,8 +297,8 @@ def test_model(data):
         x, t = data
         return criterion(model(x), t)
 
-dataset_valid_interpolation_data = Dataset(2048)
-dataset_test_extrapolation_data = Dataset(2048, extra=True)
+dataset_valid_interpolation_data = Dataset(256)
+dataset_test_extrapolation_data = Dataset(256, extra=True)
 
 # Test with different initialization
 L_in = []
