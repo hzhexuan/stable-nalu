@@ -202,10 +202,10 @@ hidden_size = ""
 for e in args.hidden_size:
     hidden_size += " "+str(e)
 out = os.popen("python experiments/myexp_sparse.py \
-    --batch-size 1024 --learning-rate 0.01 --regualizer 10 \
-    --regualizer-scaling-start 1000 --regualizer-scaling-end 2000 \
+    --batch-size "+str(args.batch_size)+" --learning-rate "+str(args.learning_rate)+" --regualizer "+str(args.regulizer)+" \
+    --regualizer-scaling-start "+str(args.regulizer_scaling_start)+" --regualizer-scaling-end "+str(args.regulizer_scaling_end)+" \
     --input-size 4 --interpolation-range [-1,1] --extrapolation-range [-1,1] \
-    --size args.size --hidden-size" + hidden_size + " --momentum args.momentum --percent args.percent \
+    --size "+str(args.size)+" --hidden-size" + hidden_size + " --momentum "+str(args.momentum --percent)+" "+str(args.percent)+" \
     --operation mul --layer-type ReRegualizedLinearNAC --nac-mul mnac \
     --seed 1 --max-iterations 2000 --verbose \
     --name-prefix test --remove-existing-data")
