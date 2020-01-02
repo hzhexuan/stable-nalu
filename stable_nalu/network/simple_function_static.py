@@ -236,6 +236,9 @@ class ConvStaticNetwork(ExtendedTorchModule):
         return out.reshape([-1,1])
     
     def regualizer(self):
+        print("k",self.k.regualizer())
+        print("k2", self.k2.regualizer())
         print(super().regualizer())
+        print("add", self.add.regualizer())
         return super().regualizer()
   
