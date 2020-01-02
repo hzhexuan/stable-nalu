@@ -347,8 +347,8 @@ for epoch_i in range(args.max_iterations + 1):
     if args.verbose and epoch_i % 1000 == 0:
         model.log_gradients()
     if(epoch_i%200 == 0):
-      x, t= dataset_valid_interpolation_data
-      print(model(x)[0], t)
+      x, t= dataset_valid_extrapolation_data
+      print(model(x)[0], t[0])
 # Compute validation loss
 loss_valid_inter = test_model(dataset_valid_interpolation_data)
 loss_valid_extra = test_model(dataset_test_extrapolation_data)
