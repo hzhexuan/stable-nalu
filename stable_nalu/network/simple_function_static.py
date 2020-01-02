@@ -203,6 +203,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
 
     def forward(self, input):
         windows = f.unfold(input, kernel_size=self.kernel)
+        print(list(windows.shape))
         processed = self.k(windows)
         out = f.fold(processed, input.shape[-2:], kernel_size=self.kernel).reshape([-1])
         print(list(out.shape))
