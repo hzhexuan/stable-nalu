@@ -192,7 +192,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
         )
 
 class ConvStaticNetwork(ExtendedTorchModule):
-    def __init__(self, input_c, output_c, kernel, hidden_size=9, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
+    def __init__(self, input_c, output_c, kernel, hidden_size=9, writer=None, first_layer=None, eps=1e-7, **kwags):
         print(kwags)
         super().__init__('network', writer=writer, **kwags)
         self.kernel=kernel
