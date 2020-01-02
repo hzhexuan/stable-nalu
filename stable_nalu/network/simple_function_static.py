@@ -210,6 +210,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
                                         eps=eps, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
+        self.add.reset_parameters()
 
     def forward(self, input):
         _, _, _, input_size = list(input.size())
