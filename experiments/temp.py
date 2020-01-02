@@ -262,7 +262,7 @@ if 'LSB_DJOB_NUMPROC' in os.environ:
 #torch.backends.cudnn.deterministic = True
 
 # setup model
-model = stable_nalu.network.MultiFunctionStaticNetwork(
+model = stable_nalu.network.ConvStaticNetwork(
     1, 1, 3,
     writer=summary_writer.every(1000).verbose(args.verbose),
     first_layer=args.first_layer,
