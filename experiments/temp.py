@@ -207,7 +207,7 @@ else:
   mask = np.random.binomial(1, args.percent, (args.size, args.size))
 
 def Dataset(num, extra=False):
-  x = 2 * np.random.rand(num, args.size, args.size) - 1
+  x = 4 * np.random.rand(num, args.size, args.size) - 2
   if(extra==True):
     x = x + np.sign(x)
   x = x * mask
