@@ -264,7 +264,7 @@ if 'LSB_DJOB_NUMPROC' in os.environ:
 
 # setup model
 model = stable_nalu.network.ConvStaticNetwork(
-    1, 9, 3,
+    1, 24, 3,
     writer=summary_writer.every(1000).verbose(args.verbose),
     nac_oob=args.oob_mode,
     regualizer_shape=args.regualizer_shape,
