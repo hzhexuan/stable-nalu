@@ -210,7 +210,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
                                         eps=eps, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
-        self.k2.reset_parameters
+        self.k2.reset_parameters()
         self.add.reset_parameters()
 
     def forward(self, input):
@@ -234,6 +234,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         out = out.reshape([B, -1])
         out = self.add(out)
         return out.reshape([-1,1])
+    
     def regualizer(self):
-        return self.k.regualizer() + self.k2.regualizer() + self.add.regualizer()
+        return super().regualizer()
   
