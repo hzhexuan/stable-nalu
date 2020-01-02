@@ -145,6 +145,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
     UNIT_NAMES = GeneralizedLayer.UNIT_NAMES
 
     def __init__(self, unit_name, input_size=100, hidden_size = [8, 32], writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
+        print(kwags)
         super().__init__('network', writer=writer, **kwags)
         self.unit_name = unit_name
         self.input_size = input_size
