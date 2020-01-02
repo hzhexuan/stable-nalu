@@ -198,14 +198,14 @@ class ConvStaticNetwork(ExtendedTorchModule):
         self.unfold_input = kernel * kernel * input_c
         self.unfold_output = output_c
         self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=6, **kwags)
+        #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
+        #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=16, **kwags)
+        #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=16*9, hidden_size=hidden_size, output_size=1, **kwags)
         self.layer_add = GeneralizedLayer(6, 1,
                                         'ReRegualizedLinearNAC',
                                         writer=self.writer,
                                         name='layer_1',
                                         eps=eps, **kwags)
-        #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
-        #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=16, **kwags)
-        #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=16*9, hidden_size=hidden_size, output_size=1, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
 
