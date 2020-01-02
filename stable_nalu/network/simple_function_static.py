@@ -162,14 +162,14 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
                                         writer=self.writer,
                                         name='layer'+str(i+1),
                                         eps=eps, **kwags))
-                #print(unit_name, hidden_size[i], hidden_size[i+1])
+                print(unit_name, hidden_size[i], hidden_size[i+1])
             else:
                 setattr(self,'layer'+str(i+1), GeneralizedLayer(hidden_size[i], hidden_size[i+1],
                                         unit_name[0:-3] + 'MNAC',
                                         writer=self.writer,
                                         name='layer'+str(i+1),
                                         eps=eps, **kwags))
-                #print(unit_name[0:-3] + 'MNAC', hidden_size[i], hidden_size[i+1])
+                print(unit_name[0:-3] + 'MNAC', hidden_size[i], hidden_size[i+1])
         self.reset_parameters()
 
     def reset_parameters(self):
@@ -197,15 +197,10 @@ class ConvStaticNetwork(ExtendedTorchModule):
         self.kernel=kernel
         self.unfold_input = kernel * kernel * input_c
         self.unfold_output = output_c
-        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=6, **kwags)
+        self.k = MultiFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size = [9, 6], **kwags)
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
         #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=16, **kwags)
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=16*9, hidden_size=hidden_size, output_size=1, **kwags)
-        self.layer_add = GeneralizedLayer(6, 1,
-                                        'ReRegualizedLinearNAC',
-                                        writer=self.writer,
-                                        name='layer_3',
-                                        eps=eps, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
 
@@ -219,7 +214,6 @@ class ConvStaticNetwork(ExtendedTorchModule):
         out = processed.reshape([B, -1, output_size, output_size])
         
         out = out.reshape([B, -1])
-        out = self.layer_add(out)
         """
         input = out
         _, _, _, input_size = list(input.size())
