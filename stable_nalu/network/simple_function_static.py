@@ -204,7 +204,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=16, **kwags)
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=16*9, hidden_size=hidden_size, output_size=1, **kwags)
         self.add = GeneralizedLayer(input_size=9, hidden_size=1,
-                                        'ReRegualizedLinearNAC',
+                                        unit_name='ReRegualizedLinearNAC',
                                         writer=self.writer,
                                         name='add',
                                         eps=eps, **kwags)
