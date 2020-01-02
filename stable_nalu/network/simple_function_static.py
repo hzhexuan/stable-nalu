@@ -191,15 +191,15 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
         )
 
 class ConvStaticNetwork(ExtendedTorchModule):
-    def __init__(self, input_c, output_c, kernel, hidden_size=8, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
+    def __init__(self, input_c, output_c, kernel, hidden_size=2, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
         super().__init__('network', writer=writer, **kwags)
         self.kernel=kernel
         self.unfold_input = kernel * kernel * input_c
         self.unfold_output = output_c
-        #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
-        #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
-        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=16, **kwags)
-        self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=16*9, hidden_size=hidden_size, output_size=1, **kwags)
+        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
+        self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
+        #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=16, **kwags)
+        #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=16*9, hidden_size=hidden_size, output_size=1, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
 
@@ -211,6 +211,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         processed = self.k(windows.reshape([-1, S])).reshape([B, W, -1]).permute(0,2,1)
         output_size = input_size - self.kernel + 1
         out = processed.reshape([B, -1, output_size, output_size])
+        """
         input = out
         _, _, _, input_size = list(input.size())
         windows = f.unfold(input, kernel_size=self.kernel)
@@ -218,7 +219,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         windows = windows.permute(0,2,1)
         processed = self.k2(windows.reshape([-1, S])).reshape([B, W, -1]).permute(0,2,1)
         output_size = input_size - self.kernel + 1
-        out = processed.reshape([B, -1, output_size, output_size])
+        out = processed.reshape([B, -1, output_size, output_size])"""
         return out.reshape([-1,1])
     def regualizer(self):
         return self.k.regualizer()
