@@ -211,7 +211,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         processed = self.k(windows.reshape([-1, S])).reshape([B, W, -1]).permute(0,2,1)
         output_size = input_size - self.kernel + 1
         out = processed.reshape([B, -1, output_size, output_size])
-        
+        print(list(out.size()))
         input = out
         _, _, _, input_size = list(input.size())
         windows = f.unfold(input, kernel_size=self.kernel)
