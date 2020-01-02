@@ -191,7 +191,7 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
         )
 
 class ConvStaticNetwork(ExtendedTorchModule):
-    def __init__(self, input_c, output_c, kernel, hidden_size=4, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
+    def __init__(self, input_c, output_c, kernel, hidden_size=8, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
         super().__init__('network', writer=writer, **kwags)
         self.kernel=kernel
         self.unfold_input = kernel * kernel * input_c
