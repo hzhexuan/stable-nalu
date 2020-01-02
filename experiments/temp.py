@@ -212,8 +212,7 @@ def Dataset(num, extra=False):
     x = x + np.sign(x)
   x = x * mask
   t = np.linalg.det(x).reshape([-1, 1])
-  x = torch.Tensor(x[...,np.newaxis])
-  x = torch.transpose(x, [0,3,1,2])
+  x = torch.Tensor(np.transpose(x[...,np.newaxis], [0,3,1,2]))
   if(torch.cuda.is_available()):
     return x.cuda(), torch.Tensor(t).cuda()
   return x, torch.Tensor(t)
