@@ -197,24 +197,20 @@ class ConvStaticNetwork(ExtendedTorchModule):
     def __init__(self, input_c, output_c, kernel, hidden_size=9, writer=None, first_layer=None, eps=1e-7, **kwags):
         super().__init__('network', writer=writer, **kwags)
         self.kernel=kernel
-        
-        self.kernel = 5
-        
-        
         self.unfold_input = kernel * kernel * input_c
         self.unfold_output = output_c
-        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=25, hidden_size=16, output_size=128, **kwags)
+        #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=25, hidden_size=16, output_size=128, **kwags)
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
-        #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=output_c, **kwags)
-        #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=output_c*kernel*kernel, hidden_size=hidden_size, output_size=output_c, **kwags)
-        self.add = GeneralizedLayer(128, 1,
+        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=output_c, **kwags)
+        self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=output_c*kernel*kernel, hidden_size=hidden_size * 9, output_size=output_c, **kwags)
+        self.add = GeneralizedLayer(output_c, 1,
                                         unit_name='ReRegualizedLinearNAC',
                                         writer=self.writer,
                                         name='add',
                                         eps=eps, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
-        #self.k2.reset_parameters()
+        self.k2.reset_parameters()
         self.add.reset_parameters()
 
     def forward(self, input):
@@ -225,7 +221,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         processed = self.k(windows.reshape([-1, S])).reshape([B, W, -1]).transpose(1, 2)
         output_size = input_size - self.kernel + 1
         out = processed.reshape([B, -1, output_size, output_size])
-        """
+        
         input = out
         _, _, _, input_size = list(input.size())
         windows = f.unfold(input, kernel_size=self.kernel)
@@ -234,7 +230,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         processed = self.k2(windows.reshape([-1, S])).reshape([B, W, -1]).transpose(1, 2)
         output_size = input_size - self.kernel + 1
         out = processed.reshape([B, -1, output_size, output_size])
-        """
+        
         out = out.reshape([B, -1])
         out = self.add(out)
         return out.reshape([-1,1])
