@@ -7,6 +7,7 @@ class SimpleFunctionStaticNetwork(ExtendedTorchModule):
     UNIT_NAMES = GeneralizedLayer.UNIT_NAMES
 
     def __init__(self, unit_name, input_size=100, hidden_size=2, output_size=1, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
+        print(kwags)
         super().__init__('network', writer=writer, **kwags)
         self.unit_name = unit_name
         self.input_size = input_size
@@ -198,10 +199,15 @@ class ConvStaticNetwork(ExtendedTorchModule):
         self.kernel=kernel
         self.unfold_input = kernel * kernel * input_c
         self.unfold_output = output_c
-        self.k = MultiFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size = [9, 6], **kwags)
+        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=9, output_size=6, **kwags)
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
         #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=16, **kwags)
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=16*9, hidden_size=hidden_size, output_size=1, **kwags)
+        self.add = GeneralizedLayer(input_size=9, hidden_size=1,
+                                        'ReRegualizedLinearNAC',
+                                        writer=self.writer,
+                                        name='add',
+                                        eps=eps, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
 
