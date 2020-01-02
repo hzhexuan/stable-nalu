@@ -226,11 +226,12 @@ class ConvStaticNetwork(ExtendedTorchModule):
         _, _, _, input_size = list(input.size())
         windows = f.unfold(input, kernel_size=self.kernel)
         B, S, W = list(windows.size())
+        print(B, S, W)
         windows = windows.transpose(1, 2)
         processed = self.k2(windows.reshape([-1, S])).reshape([B, W, -1]).transpose(1, 2)
         output_size = input_size - self.kernel + 1
         out = processed.reshape([B, -1, output_size, output_size])
-        print(list(out.size()))
+        
         out = out.reshape([B, -1])
         out = self.add(out)
         return out.reshape([-1,1])
