@@ -35,6 +35,7 @@ class SimpleFunctionStaticNetwork(ExtendedTorchModule):
                                         name='layer_2',
                                         eps=eps, **kwags)
         self.reset_parameters()
+        print(unit_name_1, unit_name_2)
         self.z_1_stored = None
 
     def reset_parameters(self):
