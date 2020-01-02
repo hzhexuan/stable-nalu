@@ -192,11 +192,11 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
 
 class ConvStaticNetwork(ExtendedTorchModule):
     def __init__(self, input_c, output_c, kernel, hidden_size=2, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
-        print(kwags)
+        super().__init__('network', writer=writer, **kwags)
         self.kernel=kernel
         self.unfold_input = kernel * kernel * input_c
         self.unfold_output = output_c
-        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output)
+        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
         
     def reset_parameters(self):
         self.k.reset_parameters()
