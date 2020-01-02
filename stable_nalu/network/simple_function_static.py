@@ -204,7 +204,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         self.layer_add = GeneralizedLayer(6, 1,
                                         'ReRegualizedLinearNAC',
                                         writer=self.writer,
-                                        name='layer_1',
+                                        name='layer_3',
                                         eps=eps, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
