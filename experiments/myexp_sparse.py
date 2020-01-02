@@ -363,7 +363,8 @@ for epoch_i in range(args.max_iterations + 1):
     if(epoch_i%200 == 0):
       x, t= dataset_test_extrapolation_data
       print(model(x)[0], t[0])
-      print(x[0])
+      if(epoch_i == 0):
+        print(x[0].reshape([3,3]))
 # Compute validation loss
 loss_valid_inter = test_model(dataset_valid_interpolation_data)
 loss_valid_extra = test_model(dataset_test_extrapolation_data)
