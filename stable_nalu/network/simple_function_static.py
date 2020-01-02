@@ -219,7 +219,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         processed = self.k2(windows.reshape([-1, S])).reshape([B, W, -1]).permute(0,2,1)
         output_size = input_size - self.kernel + 1
         out = processed.reshape([B, -1, output_size, output_size])
-        return out
+        return out.reshape([-1,1])
     def regualizer(self):
         return self.k.regualizer()
   
