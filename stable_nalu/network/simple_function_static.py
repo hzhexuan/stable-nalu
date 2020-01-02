@@ -191,15 +191,15 @@ class MultiFunctionStaticNetwork(ExtendedTorchModule):
         )
 
 class ConvStaticNetwork(ExtendedTorchModule):
-    def __init__(self, input_c, output_c, kernel, hidden_size=2, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
+    def __init__(self, input_c, output_c, kernel, hidden_size=4, writer=None, first_layer=None, nac_mul='none', eps=1e-7, **kwags):
         super().__init__('network', writer=writer, **kwags)
         self.kernel=kernel
         self.unfold_input = kernel * kernel * input_c
         self.unfold_output = output_c
         #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
-        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=32, **kwags)
-        self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=32*9, hidden_size=hidden_size, output_size=1, **kwags)
+        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=16, **kwags)
+        self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=16*9, hidden_size=hidden_size, output_size=1, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
 
