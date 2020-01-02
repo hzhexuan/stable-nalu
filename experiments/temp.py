@@ -213,8 +213,8 @@ def Dataset(num, extra=False):
   x = x * mask
   t = np.linalg.det(x).reshape([-1, 1])
   if(torch.cuda.is_available()):
-    return torch.Tensor(x.reshape([num, -1])).cuda(), torch.Tensor(t).cuda()
-  return torch.Tensor(x.reshape([num, -1])), torch.Tensor(t)
+    return torch.Tensor(x)).cuda(), torch.Tensor(t).cuda()
+  return torch.Tensor(x)), torch.Tensor(t)
 
 setattr(args, 'cuda', torch.cuda.is_available() and not args.no_cuda)
 # Prepear logging
