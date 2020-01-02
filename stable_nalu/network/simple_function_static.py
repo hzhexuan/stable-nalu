@@ -203,7 +203,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
     def forward(self, input):
         windows = f.unfold(input, kernel_size=self.kernel)
         processed = foo(windows)
-        out = f.fold(processed, input.shape[-2:], kernel_size=self.kernel)
+        out = f.fold(processed, input.shape[-2:], kernel_size=self.kernel).reshape([-1])
         return out
     def regualizer(self):
         return self.k.regualizer()
