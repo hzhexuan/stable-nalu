@@ -94,8 +94,7 @@ parser.add_argument('--simple',
                     help='Use a very simple dataset with t = sum(v[0:2]) + sum(v[4:6])')
 
 parser.add_argument('--hidden-size',
-                    action='store',
-                    default=2,
+                    nargs='+', 
                     type=int,
                     help='Specify the vector size of the hidden layer.')
 parser.add_argument('--nac-mul',
@@ -177,11 +176,10 @@ parser.add_argument('--momentum',
                     default=0.0,
                     type=float,
                     help='Specify the nestrov momentum, only used with SGD')
-
 parser.add_argument('--no-cuda',
                     action='store_true',
                     default=False,
-                    help=f'Force no CUDA (cuda usage is detected automatically as {torch.cuda.is_available()})')
+                    help='Force no CUDA (cuda usage is detected automatically as {torch.cuda.is_available()})')
 parser.add_argument('--name-prefix',
                     action='store',
                     default='simple_function_static',
@@ -198,59 +196,27 @@ parser.add_argument('--verbose',
 parser.add_argument('--size',
                     type=int,
                     default=2)
+parser.add_argument('--percent',
+                    type=float,
+                    default=1)
 args = parser.parse_args()
 
-def Dataset(num):
-  x = 4 * np.random.rand(num, args.size, args.size) - 2
+if(args.percent == 1):
+  mask = np.ones((args.size, args.size))
+else:
+  mask = np.random.binomial(1, args.percent, (args.size, args.size))
+
+def Dataset(num, extra=False):
+  x = 2 * np.random.rand(num, args.size, args.size) - 1
+  if(extra==True):
+    x = x + np.sign(x)
+  x = x * mask
   t = np.linalg.det(x).reshape([-1, 1])
-  return torch.Tensor(x.reshape([num, -1])).cuda(), torch.Tensor(t).cuda()
+  if(torch.cuda.is_available()):
+    return torch.Tensor(x.reshape([num, -1])).cuda(), torch.Tensor(t).cuda()
+  return torch.Tensor(x.reshape([num, -1])), torch.Tensor(t)
 
 setattr(args, 'cuda', torch.cuda.is_available() and not args.no_cuda)
-
-# Print configuration
-print(f'running')
-print(f'  - layer_type: {args.layer_type}')
-print(f'  - first_layer: {args.first_layer}')
-print(f'  - operation: {args.operation}')
-print(f'  - num_subsets: {args.num_subsets}')
-print(f'  - regualizer: {args.regualizer}')
-print(f'  - regualizer_z: {args.regualizer_z}')
-print(f'  - regualizer_oob: {args.regualizer_oob}')
-print(f'  -')
-print(f'  - max_iterations: {args.max_iterations}')
-print(f'  - batch_size: {args.batch_size}')
-print(f'  - seed: {args.seed}')
-print(f'  -')
-print(f'  - interpolation_range: {args.interpolation_range}')
-print(f'  - extrapolation_range: {args.extrapolation_range}')
-print(f'  - input_size: {args.input_size}')
-print(f'  - subset_ratio: {args.subset_ratio}')
-print(f'  - overlap_ratio: {args.overlap_ratio}')
-print(f'  - simple: {args.simple}')
-print(f'  -')
-print(f'  - hidden_size: {args.hidden_size}')
-print(f'  - nac_mul: {args.nac_mul}')
-print(f'  - oob_mode: {args.oob_mode}')
-print(f'  - regualizer_scaling: {args.regualizer_scaling}')
-print(f'  - regualizer_scaling_start: {args.regualizer_scaling_start}')
-print(f'  - regualizer_scaling_end: {args.regualizer_scaling_end}')
-print(f'  - regualizer_shape: {args.regualizer_shape}')
-print(f'  - mnac_epsilon: {args.mnac_epsilon}')
-print(f'  - nalu_bias: {args.nalu_bias}')
-print(f'  - nalu_two_nac: {args.nalu_two_nac}')
-print(f'  - nalu_two_gate: {args.nalu_two_gate}')
-print(f'  - nalu_mul: {args.nalu_mul}')
-print(f'  - nalu_gate: {args.nalu_gate}')
-print(f'  -')
-print(f'  - optimizer: {args.optimizer}')
-print(f'  - learning_rate: {args.learning_rate}')
-print(f'  - momentum: {args.momentum}')
-print(f'  -')
-print(f'  - cuda: {args.cuda}')
-print(f'  - name_prefix: {args.name_prefix}')
-print(f'  - remove_existing_data: {args.remove_existing_data}')
-print(f'  - verbose: {args.verbose}')
-
 # Prepear logging
 summary_writer = stable_nalu.writer.SummaryWriter(
     f'{args.name_prefix}/{args.layer_type.lower()}'
@@ -282,7 +248,6 @@ summary_writer = stable_nalu.writer.SummaryWriter(
     f'_z-{"simple" if args.simple else f"{args.input_size}-{args.subset_ratio}-{args.overlap_ratio}"}'
     f'_b{args.batch_size}'
     f'_s{args.seed}'
-    f'_h{args.hidden_size}'
     f'_z{args.num_subsets}'
     f'_lr-{args.optimizer}-{"%.5f" % args.learning_rate}-{args.momentum}',
     remove_existing_data=args.remove_existing_data
@@ -293,35 +258,15 @@ if 'LSB_DJOB_NUMPROC' in os.environ:
     torch.set_num_threads(int(os.environ['LSB_DJOB_NUMPROC']))
 
 # Set seed
-torch.manual_seed(args.seed)
-torch.backends.cudnn.deterministic = True
-
-# Setup datasets
-dataset = stable_nalu.dataset.SimpleFunctionStaticDataset(
-    operation=args.operation,
-    input_size=args.input_size,
-    subset_ratio=args.subset_ratio,
-    overlap_ratio=args.overlap_ratio,
-    num_subsets=args.num_subsets,
-    simple=args.simple,
-    use_cuda=args.cuda,
-    seed=args.seed,
-)
-print(f'  -')
-print(f'  - dataset: {dataset.print_operation()}')
-# Interpolation and extrapolation seeds are from random.org
-dataset_train = iter(dataset.fork(sample_range=args.interpolation_range).dataloader(batch_size=args.batch_size))
-dataset_valid_interpolation_data = next(iter(dataset.fork(sample_range=args.interpolation_range, seed=43953907).dataloader(batch_size=10000)))
-dataset_test_extrapolation_data = next(iter(dataset.fork(sample_range=args.extrapolation_range, seed=8689336).dataloader(batch_size=10000)))
+#torch.manual_seed(args.seed)
+#torch.backends.cudnn.deterministic = True
 
 # setup model
-model = stable_nalu.network.ReversedFunctionStaticNetwork(
-    input_c=1,
-    output_c=1,
-    kernel=3,
+model = stable_nalu.network.MultiFunctionStaticNetwork(
+    1, 1, 3,
     writer=summary_writer.every(1000).verbose(args.verbose),
     first_layer=args.first_layer,
-    hidden_size=args.hidden_size,
+    hidden_size=[int(i) for i in args.hidden_size],
     nac_oob=args.oob_mode,
     regualizer_shape=args.regualizer_shape,
     regualizer_z=args.regualizer_z,
@@ -333,6 +278,7 @@ model = stable_nalu.network.ReversedFunctionStaticNetwork(
     nalu_mul=args.nalu_mul,
     nalu_gate=args.nalu_gate,
 )
+
 model.reset_parameters()
 if args.cuda:
     model.cuda()
@@ -350,11 +296,21 @@ def test_model(data):
         x, t = data
         return criterion(model(x), t)
 
-dataset_valid_interpolation_data = Dataset(2048)
-dataset_test_extrapolation_data = Dataset(2048)
+dataset_valid_interpolation_data = Dataset(256)
+dataset_test_extrapolation_data = Dataset(256, extra=True)
+
+# Test with different initialization
+L_in = []
+L_ex = []
+for i in range(100):
+  model.reset_parameters()
+  L_in.append(test_model(dataset_valid_interpolation_data).cpu().numpy())
+  L_ex.append(test_model(dataset_test_extrapolation_data).cpu().numpy())
+#print("in, ex", sum(L_in)/len(L_in), sum(L_ex)/len(L_ex))
+  
 # Train model
 print('')
-for epoch_i, (x_train, t_train) in zip(range(args.max_iterations + 1), dataset_train):
+for epoch_i in range(args.max_iterations + 1):
     x_train, t_train = Dataset(args.batch_size)
     summary_writer.set_iteration(epoch_i)
 
@@ -409,10 +365,18 @@ loss_valid_inter = test_model(dataset_valid_interpolation_data)
 loss_valid_extra = test_model(dataset_test_extrapolation_data)
 
 # Write results for this training
-print(f'finished:')
-print(f'  - loss_train: {loss_train}')
-print(f'  - loss_valid_inter: {loss_valid_inter}')
-print(f'  - loss_valid_extra: {loss_valid_extra}')
+#print(f'finished:')
+#print(f'  - loss_train: {loss_train}')
+#print(f'  - loss_valid_inter: {loss_valid_inter}')
+#print(f'  - loss_valid_extra: {loss_valid_extra}')
+def listToString(s):   
+    return ' '.join([str(elem) for elem in s])
 
+print(sum(L_in)/len(L_in), sum(L_ex)/len(L_ex), loss_valid_inter.cpu().numpy(), loss_valid_extra.cpu().numpy())
+with open("result"+str(args.size)+".txt", "a+") as f:
+  f.write(listToString([sum(L_in)/len(L_in), sum(L_ex)/len(L_ex), loss_valid_inter.cpu().numpy(), loss_valid_extra.cpu().numpy()]) + '\n')
 # Use saved weights to visualize the intermediate values.
-stable_nalu.writer.save_model(summary_writer.name, model)
+#stable_nalu.writer.save_model(summary_writer.name, model)
+import sys
+#sys.exit([sum(L_in)/len(L_in), sum(L_ex)/len(L_ex), loss_valid_inter.cpu().numpy(), loss_valid_extra.cpu().numpy()])
+os._exit(0)
