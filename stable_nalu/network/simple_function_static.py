@@ -196,8 +196,10 @@ class ConvStaticNetwork(ExtendedTorchModule):
         self.kernel=kernel
         self.unfold_input = kernel * kernel * input_c
         self.unfold_output = output_c
-        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
-        
+        #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
+        #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
+        self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=9, **kwags)
+        self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=9, hidden_size=hidden_size, output_size=1, **kwags)
     def reset_parameters(self):
         self.k.reset_parameters()
 
@@ -209,6 +211,16 @@ class ConvStaticNetwork(ExtendedTorchModule):
         processed = self.k(windows.reshape([-1, S])).reshape([B, W, -1]).permute(0,2,1)
         output_size = input_size - self.kernel + 1
         out = processed.reshape([B, -1, output_size, output_size])
+        
+        input = output
+        _, _, _, input_size = list(input.size())
+        windows = f.unfold(input, kernel_size=self.kernel)
+        B, S, W = list(windows.size())
+        windows = windows.permute(0,2,1)
+        processed = self.k2(windows.reshape([-1, S])).reshape([B, W, -1]).permute(0,2,1)
+        output_size = input_size - self.kernel + 1
+        out = processed.reshape([B, -1, output_size, output_size])
         return out
     def regualizer(self):
         return self.k.regualizer()
+  
