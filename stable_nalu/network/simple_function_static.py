@@ -221,6 +221,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         out = processed.reshape([B, -1, output_size, output_size])
         
         out = out.reshape([B, -1])
+        out = self.add(out)
         """
         input = out
         _, _, _, input_size = list(input.size())
