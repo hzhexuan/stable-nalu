@@ -1,4 +1,5 @@
 import scipy.linalg
+import numpy as np
 import torch
 from ..abstract import ExtendedTorchModule
 from ..layer import GeneralizedLayer, BasicLayer
