@@ -264,7 +264,7 @@ if 'LSB_DJOB_NUMPROC' in os.environ:
 
 # setup model
 model = stable_nalu.network.ConvStaticNetwork(
-    input_c=1, output_c=32, kernel=3, hidden_size=2, 
+    input_c=1, output_c=32, kernel=3, hidden_size=4, 
     writer=summary_writer.every(1000).verbose(args.verbose),
     nac_oob=args.oob_mode,
     regualizer_shape=args.regualizer_shape,
@@ -310,6 +310,7 @@ for i in range(100):
 # Train model
 print('')
 for epoch_i in range(args.max_iterations + 1):
+    print(epoch_i)
     x_train, t_train = Dataset(args.batch_size)
     summary_writer.set_iteration(epoch_i)
 
