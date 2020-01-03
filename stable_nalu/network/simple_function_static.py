@@ -226,6 +226,7 @@ class ConvStaticNetwork(ExtendedTorchModule):
         B, S, W = list(windows.size())
         windows = windows.transpose(1, 2)
         for e in self.k.layer_2.parameters():
+            print(list(e.size()), list(self.mask.size()))
             e = e * self.mask
         processed = self.k(windows.reshape([-1, S])).reshape([B, W, -1]).transpose(1, 2)
         output_size = input_size - self.kernel + 1
