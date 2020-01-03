@@ -310,7 +310,6 @@ for i in range(100):
 # Train model
 print('')
 for epoch_i in range(args.max_iterations + 1):
-    print(epoch_i)
     x_train, t_train = Dataset(args.batch_size)
     summary_writer.set_iteration(epoch_i)
 
