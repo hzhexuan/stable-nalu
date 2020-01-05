@@ -206,9 +206,9 @@ class ConvStaticNetwork(ExtendedTorchModule):
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=self.unfold_output, **kwags)
         for i in range(self.n):
             if(i == 0):
-                setattr(self,'layer'+str(i+1), SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size, output_size=output_c, **kwags))
+                setattr(self,'layer'+str(i+1), SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size * output_c, output_size=output_c, **kwags))
             else:
-                setattr(self,'layer'+str(i+1), SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=output_c*kernel*kernel, hidden_size=hidden_size, output_size=output_c, **kwags))
+                setattr(self,'layer'+str(i+1), SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=output_c*kernel*kernel, hidden_size=hidden_size * output_c, output_size=output_c, **kwags))
         #self.k = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=self.unfold_input, hidden_size=hidden_size * output_c, output_size=output_c, **kwags)
         #self.k2 = SimpleFunctionStaticNetwork('ReRegualizedLinearNAC', input_size=output_c*kernel*kernel, hidden_size=hidden_size * output_c, output_size=output_c, **kwags)
         self.add = GeneralizedLayer(output_c, 1,
@@ -227,7 +227,6 @@ class ConvStaticNetwork(ExtendedTorchModule):
             windows = f.unfold(input, kernel_size=self.kernel)
             B, S, W = list(windows.size())
             windows = windows.transpose(1, 2)
-            getattr(self,'layer'+str(i+1))
             getattr(self,'layer'+str(i+1)).layer_2.layer.W = torch.nn.Parameter(getattr(self,'layer'+str(i+1)).layer_2.layer.W * self.mask)
 
             processed = getattr(self,'layer'+str(i+1))(windows.reshape([-1, S])).reshape([B, W, -1]).transpose(1, 2)
