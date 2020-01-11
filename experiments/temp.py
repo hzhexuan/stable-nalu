@@ -94,7 +94,9 @@ parser.add_argument('--simple',
                     help='Use a very simple dataset with t = sum(v[0:2]) + sum(v[4:6])')
 
 parser.add_argument('--hidden-size',
-                    nargs='+', 
+                    type=int,
+                    help='Specify the vector size of the hidden layer.')
+parser.add_argument('--output_c',
                     type=int,
                     help='Specify the vector size of the hidden layer.')
 parser.add_argument('--nac-mul',
@@ -264,7 +266,7 @@ if 'LSB_DJOB_NUMPROC' in os.environ:
 
 # setup model
 model = stable_nalu.network.ConvStaticNetwork(
-    input_c=1, output_c=32, kernel=3, hidden_size=4, input_size=args.size,
+    input_c=1, output_c=args.output_c, kernel=3, hidden_size=args.hidden_size, input_size=args.size,
     writer=summary_writer.every(1000).verbose(args.verbose),
     nac_oob=args.oob_mode,
     regualizer_shape=args.regualizer_shape,
