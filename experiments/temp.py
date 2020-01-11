@@ -96,7 +96,7 @@ parser.add_argument('--simple',
 parser.add_argument('--hidden-size',
                     type=int,
                     help='Specify the vector size of the hidden layer.')
-parser.add_argument('--output_c',
+parser.add_argument('--output-c',
                     type=int,
                     help='Specify the vector size of the hidden layer.')
 parser.add_argument('--nac-mul',
