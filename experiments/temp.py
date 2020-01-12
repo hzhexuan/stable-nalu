@@ -342,7 +342,7 @@ for epoch_i in range(args.max_iterations + 1):
     elif (args.regualizer_scaling == 'exp'):
         r_w_scale = 1 - math.exp(-1e-5 * epoch_i)
 
-    loss_train_criterion = criterion(log(y_train), log(t_train))
+    loss_train_criterion = criterion(y_train, t_train)
     loss_train_regualizer = args.regualizer * r_w_scale * regualizers['W'] + regualizers['g'] + args.regualizer_z * regualizers['z'] + args.regualizer_oob * regualizers['W-OOB']
     loss_train = loss_train_criterion + loss_train_regualizer
 
