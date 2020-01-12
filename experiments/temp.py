@@ -209,7 +209,7 @@ else:
   mask = np.random.binomial(1, args.percent, (args.size, args.size))
  
 def log(x):
-  return torch.sign(x) * torch.log(torch.abs(x))
+  return torch.sign(x) * torch.log(torch.abs(x)+1e-16)
 
 def Dataset(num, extra=False):
   x = 4 * np.random.rand(num, args.size, args.size) - 2
