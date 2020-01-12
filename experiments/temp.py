@@ -212,7 +212,7 @@ def log(x):
   return torch.sign(x) * torch.log(torch.abs(x)+1e-16)
 
 def Dataset(num, extra=False):
-  x = 4 * np.random.rand(num, args.size, args.size) - 2
+  x = 2 * np.random.rand(num, args.size, args.size) - 1
   if(extra==True):
     x = x + np.sign(x)
   x = x * mask
