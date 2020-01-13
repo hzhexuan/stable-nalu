@@ -289,7 +289,7 @@ if args.cuda:
 criterion = torch.nn.MSELoss()
 
 for module in model.children():
-  print(module)
+  print(module, isinstance(module, ExtendedTorchModule))
 
 if args.optimizer == 'adam':
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
